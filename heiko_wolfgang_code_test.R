@@ -248,15 +248,21 @@ library(kwb.flusshygiene)
    # test_sparse <- sparse.model.matrix(testing_heiko$log_e.coli~., testing_heiko[,3:ncol(testing_heiko)]) #data must be dataframe
     
     fit_lasso_base <- glmnet(train_sparse, training_heiko$log_e.coli , na.rm =T, standardize = F, alpha = 1,relax = F)
-    fit_lasso_base_cross <- cv.glmnet(train_sparse, training_heiko$log_e.coli,type.measure="mse", alpha=1, family="gaussian",  nfolds = 3,standardize = F,relax = F)#--> alpha =1:  lasso regressio
+    fit_lasso_base_cross <- cv.glmnet(train_sparse, training_heiko$log_e.coli,type.measure="mse", alpha=1, family="gaussian",  nfolds = 5,standardize = F,relax = F)#--> alpha =1:  lasso regressio
     
     fit_lasso_base_stand <- glmnet(train_sparse, training_heiko$log_e.coli , na.rm =T, standardize = T, alpha = 1,relax = F)
-    fit_lasso_base_cross_stand <- cv.glmnet(train_sparse, training_heiko$log_e.coli,type.measure="mse", alpha=1, family="gaussian",  nfolds = 3,standardize = T,relax = F)#--> alpha =1:  lasso regressio
+    fit_lasso_base_cross_stand <- cv.glmnet(train_sparse, training_heiko$log_e.coli,type.measure="mse", alpha=1, family="gaussian",  nfolds = 5,standardize = T,relax = F)#--> alpha =1:  lasso regressio
+    
+    fit_elnet_base_stand <- glmnet(train_sparse, training_heiko$log_e.coli , na.rm =T, standardize = T, alpha = 1,relax = F)
+    fit_elnet_base_cross_stand <- cv.glmnet(train_sparse, training_heiko$log_e.coli,type.measure="mse", alpha=1, family="gaussian",  nfolds = 5,standardize = T,relax = F)#--> alpha =1:  lasso regressio
     
     
+    fit_lasso_relax_stand <- glmnet(train_sparse, training_heiko$log_e.coli , na.rm =T, standardize = T, alpha = 1,relax = T)
+    fit_lasso_relax_cross_stand <- cv.glmnet(train_sparse, training_heiko$log_e.coli,type.measure="mse", alpha=1, family="gaussian",  nfolds = 3,standardize = T,relax = T)#--> alpha =1:  lasso regressio
     
-    coef_1se<-get_coef_1se_cv(fit_lasso_base_cross_stand)
-    coef_min_lambda<-get_coef_min_cv(fit_lasso_base_cross_stand)
+    
+    coef_1se<-get_coef_1se_cv(fit_elnet_base_cross_stand)
+    coef_min_lambda<-get_coef_min_cv(fit_elnet_base_cross_stand)
     coef_1se
     coef_min_lambda
     
